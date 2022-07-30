@@ -16,27 +16,27 @@ long randNum;
 
 void setup() {
   // put your setup code here, to run once:
-  LEDS.addLeds<WS2812B, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);
+  FastLED.addLeds<WS2812B, LED_DT, COLOR_ORDER>(leds, NUM_LEDS);
   
   // generate a random number
   Serial.begin(9600);
   randomSeed(analogRead(0));
-  randNum = random(2);
+  //randNum = random(2);
 }
  
 void loop() {
   // put your main code here, to run repeatedly:
-  
+  randNum = random(3);
   if (randNum == 0) {
-    // 1. colour change 
+    // 0. colour change 
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = CHSV(hue, 255, 255);
     }
     EVERY_N_MILLISECONDS(100){
       hue++;
     }
-  } else {
-    // 2. colour wave
+  } else if (randNum == 1){
+    // 1. colour wave
     for (int j = 0; j < 255; j++) {
       for (int i = 0; i < NUM_LEDS; i++) {
         leds[i] = CHSV(i - (j * 2), SATURATION, BRIGHTNESS); 
@@ -44,6 +44,19 @@ void loop() {
       FastLED.show();
       delay(25); // how fast the colours move
     }
+  }else if(randNum == 2){
+    // 2. Flashing Leds
+    for(int i = 0; i < NUM_LEDS; i++){
+      leds[i] = CRGB::LimeGreen;
+      FastLED.show();
+    }
+    delay(1000);
+    for(int i = 0; i < NUM_LEDS; i++){
+      leds[0] = CRGB::Black;
+      FastLED.show();
+    }
   }
   FastLED.show();
 }
+
+
