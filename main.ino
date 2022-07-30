@@ -100,6 +100,9 @@ void loop(){
   // Turn off LEDS if its been 10 minutes 
   if(millis() - time_since_last_clap > 600000){
     // DISABLE ALL LIGHTS 
+    // Loop through all sementes
+      //Loop through all LEDS in segments 
+        //Turn off
   }
 
 }
