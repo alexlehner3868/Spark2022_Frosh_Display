@@ -24,7 +24,7 @@ void setup() {
   //randNum = random(2);
 }
  
-void loop() {
+/* void loop() {
   // put your main code here, to run repeatedly:
   randNum = random(3);
   if (randNum == 0) {
@@ -58,5 +58,48 @@ void loop() {
   }
   FastLED.show();
 }
+ */
+bool clap = false; // This is the signal frm the other team 
+int state = 0;
+bool currently_animating = false;
+bool opposite_animation = false;
+unsigned long time_since_last_clap = 0;
+#define NUM_ANIMATIONS 3 // The number of animations we have programmed   
 
+void loop(){
+  if(clap){
+    time_since_last_clap = millis();
+    state = random(NUM_ANIMATIONS);
+    clap = false;
+    currently_animating = true;
+  }
+  if(currently_animating && opposite_animation){
+    switch(state){
+      case 0:
+        //flicker off
+        break;
+      default:
+        break;
+    }
+    currently_animating = false;
+    opposite_animation = false;
+  }
 
+  if(currently_animating){
+   switch(state){
+    case 0 :
+      //flicker on 
+      opposite_animation = true;
+      break; 
+    default :
+      break;
+   }
+   currently_animating = false;
+  }
+  
+  // Turn off LEDS if its been 10 minutes 
+  if(millis() - time_since_last_clap > 600000){
+    // DISABLE ALL LIGHTS 
+  }
+
+}
