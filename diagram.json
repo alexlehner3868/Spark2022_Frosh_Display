@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "author": "Anonymous maker",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-mega", "id": "mega", "top": 659.02, "left": 224.13, "attrs": {} },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels1",
+      "top": 282.62,
+      "left": 65.3,
+      "rotate": 60,
+      "attrs": { "rows": "5", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels2",
+      "top": 319.35,
+      "left": 143.42,
+      "rotate": -20,
+      "attrs": { "rows": "5", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels3",
+      "top": 339.01,
+      "left": 82.46,
+      "rotate": 115,
+      "attrs": { "rows": "7", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels4",
+      "top": 322.62,
+      "left": 226.01,
+      "rotate": 90,
+      "attrs": { "rows": "5", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels5",
+      "top": 257.08,
+      "left": 386.91,
+      "rotate": 70,
+      "attrs": { "rows": "8", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels6",
+      "top": 153.65,
+      "left": 589.83,
+      "rotate": 60,
+      "attrs": { "rows": "9", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels7",
+      "top": 46.5,
+      "left": 858.87,
+      "rotate": 85,
+      "attrs": { "rows": "12", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels8",
+      "top": 86.25,
+      "left": 1156.08,
+      "rotate": 100,
+      "attrs": { "rows": "10", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels9",
+      "top": 89.13,
+      "left": 1419.48,
+      "rotate": 80,
+      "attrs": { "rows": "10", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels10",
+      "top": -0.28,
+      "left": 1706.08,
+      "rotate": 75,
+      "attrs": { "rows": "12", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels11",
+      "top": 295.08,
+      "left": 656.22,
+      "rotate": -20,
+      "attrs": { "rows": "12", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels12",
+      "top": 235.47,
+      "left": 782.8,
+      "rotate": -20,
+      "attrs": { "rows": "14", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels13",
+      "top": 228.85,
+      "left": 893.36,
+      "rotate": 5,
+      "attrs": { "rows": "14", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    },
+    {
+      "type": "wokwi-neopixel-canvas",
+      "id": "neopixels14",
+      "top": 248.72,
+      "left": 996.68,
+      "rotate": 15,
+      "attrs": { "rows": "14", "cols": "1", "pixelate": "1", "matrixBrightness": ".8" }
+    }
+  ],
+  "connections": [
+    [ "mega:10", "neopixels1:DIN", "green", [] ],
+    [ "mega:11", "neopixels2:DIN", "green", [] ],
+    [ "mega:12", "neopixels3:DIN", "green", [] ],
+    [ "mega:13", "neopixels4:DIN", "green", [] ],
+    [ "mega:14", "neopixels5:DIN", "green", [] ],
+    [ "mega:15", "neopixels6:DIN", "green", [] ],
+    [ "mega:16", "neopixels7:DIN", "green", [] ],
+    [ "mega:17", "neopixels8:DIN", "green", [] ],
+    [ "mega:18", "neopixels9:DIN", "green", [] ],
+    [ "mega:19", "neopixels10:DIN", "green", [] ],
+    [ "mega:20", "neopixels11:DIN", "green", [] ],
+    [ "mega:21", "neopixels12:DIN", "green", [] ],
+    [ "mega:22", "neopixels13:DIN", "green", [] ],
+    [ "mega:23", "neopixels14:DIN", "green", [] ],
+    [ "mega:GND.2", "neopixels1:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels2:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels3:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels4:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels5:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels6:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels7:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels8:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels9:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels10:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels11:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels12:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels13:VSS", "black", [] ],
+    [ "mega:GND.2", "neopixels14:VSS", "black", [] ],
+    [ "mega:5V", "neopixels1:VDD", "red", [] ],
+    [ "mega:5V", "neopixels2:VDD", "red", [] ],
+    [ "mega:5V", "neopixels3:VDD", "red", [] ],
+    [ "mega:5V", "neopixels4:VDD", "red", [] ],
+    [ "mega:5V", "neopixels5:VDD", "red", [] ],
+    [ "mega:5V", "neopixels6:VDD", "red", [] ],
+    [ "mega:5V", "neopixels7:VDD", "red", [] ],
+    [ "mega:5V", "neopixels8:VDD", "red", [] ],
+    [ "mega:5V", "neopixels9:VDD", "red", [] ],
+    [ "mega:5V", "neopixels10:VDD", "red", [] ],
+    [ "mega:5V", "neopixels11:VDD", "red", [] ],
+    [ "mega:5V", "neopixels12:VDD", "red", [] ],
+    [ "mega:5V", "neopixels13:VDD", "red", [] ],
+    [ "mega:5V", "neopixels14:VDD", "red", [] ]
+  ]
+}
