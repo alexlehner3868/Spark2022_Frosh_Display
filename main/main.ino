@@ -149,7 +149,6 @@ void setup() {
  */
 bool clap = false; // This is the signal frm the other team 
 int state = 0;
-bool opposite_animation = false;
 unsigned long time_since_last_clap = 0;
 #define NUM_ANIMATIONS 3 // The number of animations we have programmed   
 
@@ -157,24 +156,14 @@ void loop(){
   if(clap){
     time_since_last_clap = millis();
     state = random(NUM_ANIMATIONS);
-      // hard code the opposite states in 
-    if(opposite_animation){
-      // Flicker on -> flicker off
-      if(state == 0){
-        state =1;
-      }
-    }
+
     clap = false;
   }
  
     switch(state){
       case 0:
-        //flicker on
-        opposite_animation = true; 
+          //eg flicker 
         break;
-      case 1: 
-        //flicker off
-        opposite_animation = false
       default:
         break;
     };
