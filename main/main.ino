@@ -62,6 +62,10 @@ long randNum;
 void colorRainbowChange();
 void brightnessChange();
 void lightBottomTop();
+void lightLeftRightBone();
+void lightLeftRightLED();
+void colourRainbowWave();
+void colourRainbowBone();
 /**********END OF ANIMATION FUNCTION PROTOTYPES******************/
 
 
@@ -85,6 +89,71 @@ void brightnessChange(){
 
 void lightBottomTop(){
 
+}
+
+// light up left to right, by bone
+void lightLeftRightBone() {
+  for (int j = 0; j < 255; j++) {
+    for (int k = 0; k < 14; k++){
+      for (int i = 0; i < num_leds[k]; i++) {
+        (leds[k])[i] = CRGB::LimeGreen;
+      }
+      delay(250);
+      FastLED.show();
+    }
+  }
+}
+
+// light up left to right, by LEDs
+void lightLeftRightLED() {
+  for (int j = 0; j < 255; j++) {
+    for (int k = 0; k < 14; k++){
+      for (int i = num_leds[k] - 1; i >= 0; i--) {
+        (leds[k])[i] = CRGB::LimeGreen;
+        FastLED.show();
+      }
+    }
+  }
+}
+
+// rainbow wave 
+void colourRainbowWave() {
+  for (int j = 0; j < 255; j++) {
+    for (int k = 0; k < 14; k++){
+      for (int i = 0; i < num_leds[k]; i++) {
+        (leds[k])[i] = CHSV(i - (j * 2), SATURATION, BRIGHTNESS); 
+      }
+      FastLED.show();
+    }
+  }
+}
+
+// each bone different rainbow colour left to right
+void colourRainbowBone() {
+  for (int j = 0; j < 255; j++) {
+    for (int k = 0; k < 14; k++){
+      for (int i = 0; i < num_leds[k]; i++) {
+        if (k == 0 || k == 2) {
+          (leds[k])[i] = CRGB::MediumPurple;
+        } else if (k == 1 || k == 3) {
+          (leds[k])[i] = CRGB::Purple;
+        } else if (k == 4) {
+          (leds[k])[i] = CRGB::Red;
+        } else if (k == 5 || k == 10 || k == 11) {
+          (leds[k])[i] = CRGB::Orange;
+        } else if (k == 6 || k == 12) {
+          (leds[k])[i] = CRGB::Yellow;
+        } else if (k == 7 || k == 13) {
+          (leds[k])[i] = CRGB::GreenYellow;
+        } else if (k == 8) {
+          (leds[k])[i] = CRGB::CadetBlue;
+        } else if (k == 9) {
+          (leds[k])[i] = CRGB::SkyBlue;
+        }
+      }
+      FastLED.show();
+    }
+  }
 }
 
 /**********END OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
@@ -149,44 +218,32 @@ void setup() {
 }
  
 /* void loop() {
-  // put your main code here, to run repeatedly:
-  randNum = random(3);
-  if (randNum == 0) {
-    // 0. colour change 
-    for (int i = 0; i < NUM_LEDS; i++) {
-      leds[i] = CHSV(hue, 255, 255);
-    }
-    EVERY_N_MILLISECONDS(100){
-      hue++;
-    }
-  } else if (randNum == 1){
-    // 1. colour wave
-    for (int j = 0; j < 255; j++) {
-      for (int i = 0; i < NUM_LEDS; i++) {
-        leds[i] = CHSV(i - (j * 2), SATURATION, BRIGHTNESS); 
-      }
-      FastLED.show();
-      delay(25); // how fast the colours move
-    }
-  }else if(randNum == 2){
-    // 2. Flashing Leds
-    for(int i = 0; i < NUM_LEDS; i++){
-      leds[i] = CRGB::LimeGreen;
-      FastLED.show();
-    }
-    delay(1000);
-    for(int i = 0; i < NUM_LEDS; i++){
-      leds[0] = CRGB::Black;
-      FastLED.show();
-    }
+  
+  // 0. colour change 
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CHSV(hue, 255, 255);
   }
+  EVERY_N_MILLISECONDS(100){
+    hue++;
+  }
+  // 2. Flashing Leds
+  for(int i = 0; i < NUM_LEDS; i++){
+    leds[i] = CRGB::LimeGreen;
+    FastLED.show();
+  }
+  delay(1000);
+  for(int i = 0; i < NUM_LEDS; i++){
+    leds[0] = CRGB::Black;
+    FastLED.show();
+  }
+  
   FastLED.show();
 }
  */
 bool clap = false; // This is the signal frm the other team 
 int state = 0;
 unsigned long time_since_last_clap = 0;
-#define NUM_ANIMATIONS 3 // The number of animations we have programmed   
+#define NUM_ANIMATIONS 7 // The number of animations we have programmed   
 
 void loop(){
   if(clap){
@@ -198,7 +255,25 @@ void loop(){
  
     switch(state){
       case 0:
-          //eg flicker 
+        colorRainbowChange();  
+        break;
+      case 1:
+        brightnessChange();
+        break;
+      case 2:
+        lightBottomTop();
+        break;
+      case 3:
+        lightLeftRightBone();
+        break;
+      case 4:
+        lightLeftRightLED();
+        break;
+      case 5:
+        colourRainbowWave();
+        break;
+      case 6:
+        colourRainbowBone();
         break;
       default:
         break;
