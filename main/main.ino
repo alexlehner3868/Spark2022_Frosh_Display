@@ -149,7 +149,6 @@ void setup() {
  */
 bool clap = false; // This is the signal frm the other team 
 int state = 0;
-bool currently_animating = false;
 bool opposite_animation = false;
 unsigned long time_since_last_clap = 0;
 #define NUM_ANIMATIONS 3 // The number of animations we have programmed   
@@ -158,33 +157,29 @@ void loop(){
   if(clap){
     time_since_last_clap = millis();
     state = random(NUM_ANIMATIONS);
+      // hard code the opposite states in 
+    if(opposite_animation){
+      // Flicker on -> flicker off
+      if(state == 0){
+        state =1;
+      }
+    }
     clap = false;
-    currently_animating = true;
   }
-  if(currently_animating && opposite_animation){
+ 
     switch(state){
       case 0:
-        //flicker off
+        //flicker on
+        opposite_animation = true; 
         break;
+      case 1: 
+        //flicker off
+        opposite_animation = false
       default:
         break;
-    }
-    currently_animating = false;
-    opposite_animation = false;
-  }
-
-  if(currently_animating){
-   switch(state){
-    case 0 :
-      //flicker on 
-      opposite_animation = true;
-      break; 
-    default :
-      break;
-   }
-   currently_animating = false;
-  }
+    };
   
+
   // Turn off LEDS if its been 10 minutes 
   if(millis() - time_since_last_clap > 600000){
     // DISABLE ALL LIGHTS 
