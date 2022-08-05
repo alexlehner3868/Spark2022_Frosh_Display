@@ -1,12 +1,10 @@
 #include <FastLED.h>
 
-#define NUM_LEDS 32
+// #define NUM_LEDS 32
 
-CRGB leds[NUM_LEDS];
+// CRGB leds[NUM_LEDS];
 
-// define variables used by the sequences
-uint8_t hue = 0;                                       // starting hue
-long randNum;
+
 
 // Fixed definitions cannot change on the fly.
 #define LED_DT 22
@@ -53,6 +51,44 @@ struct CRGB* leds[14];
 
 //array that contains the num of leds for each strip
 int num_leds[14];
+
+/**********START OF GLOBAL VARIABLES******************/
+uint8_t hue = 0; // starting hue
+long randNum;
+/**********END OF GLOBAL VARIABLES******************/
+
+
+/**********START OF ANIMATION FUNCTION PROTOTYPES******************/
+void colorRainbowChange();
+void brightnessChange();
+void lightBottomTop();
+/**********END OF ANIMATION FUNCTION PROTOTYPES******************/
+
+
+/**********START OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
+//still need to fix
+void colorRainbowChange(){
+  for (int i = 0; i < 14; i++) {
+    for (int j = 0; j < num_leds[i]; j++){
+      leds[i][j] = CHSV(hue, 255, 255);
+    }
+  }
+  EVERY_N_MILLISECONDS(100){
+    hue++;
+  }
+  FastLED.show();
+}
+
+void brightnessChange(){
+
+}
+
+void lightBottomTop(){
+
+}
+
+/**********END OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
+
 
 void setup() {
   // put your setup code here, to run once:
