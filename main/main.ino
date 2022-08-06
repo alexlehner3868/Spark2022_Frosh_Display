@@ -385,6 +385,12 @@ void loop(){
     // Loop through all sementes
       //Loop through all LEDS in segments 
         //Turn off
+    for (int i = 0; i < 14; i++){
+      for (int k = 0; k < num_leds[i]; k++){
+        leds[i][k] = CRGB::Black;
+      }
+    }
+    FastLED.show();
   }
 
 }
