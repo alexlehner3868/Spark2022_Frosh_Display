@@ -70,7 +70,7 @@ void colourRainbowBone();
 
 
 /**********START OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
-//still need to fix
+// change color for all bones and LEDs
 void colorRainbowChange(){
   for (int i = 0; i < 14; i++) {
     for (int j = 0; j < num_leds[i]; j++){
@@ -83,12 +83,73 @@ void colorRainbowChange(){
   FastLED.show();
 }
 
+// dim and light brightness for all bones and LEDs
+// need to fix/change completely
 void brightnessChange(){
-
+  // set color
+    for(int i = 0; i < 14; i++){
+    for(int j = 0; j < num_leds[i]; j++){
+      leds[i][j] = CRGB::LimeGreen;
+    }
+  }
+  FastLED.show();
+  delay(1000);
+  //  fade all LEDs down by 100 in brightness each time this is called
+  EVERY_N_MILLISECONDS(100){
+    fadeToBlackBy(leds1, NUM_LEDS1, 100);
+    fadeToBlackBy(leds2, NUM_LEDS2, 100);
+    fadeToBlackBy(leds3, NUM_LEDS3, 100);
+    fadeToBlackBy(leds4, NUM_LEDS4, 100);
+    fadeToBlackBy(leds5, NUM_LEDS5, 100);
+    fadeToBlackBy(leds6, NUM_LEDS6, 100);
+    fadeToBlackBy(leds7, NUM_LEDS7, 100);
+    fadeToBlackBy(leds8, NUM_LEDS8, 100);
+    fadeToBlackBy(leds9, NUM_LEDS9, 100);
+    fadeToBlackBy(leds10, NUM_LEDS10, 100);
+    fadeToBlackBy(leds11, NUM_LEDS11, 100);
+    fadeToBlackBy(leds12, NUM_LEDS12, 100);
+    fadeToBlackBy(leds13, NUM_LEDS13, 100);
+    fadeToBlackBy(leds14, NUM_LEDS14, 100);
+  }
+  FastLED.show();
+  delay(1000);
 }
 
+// light up bottom to top, by LEDs
 void lightBottomTop(){
-
+  // legs lights up
+  int i = 11;
+  int j;
+  for(j = num_leds[i] - 1; j >= 0; j--){
+    while(i < 14){
+      leds[i][j] = CRGB::LimeGreen; 
+      FastLED.show();
+      i++;
+    }
+    i = 10;
+  }
+  // head lights up
+  i = 2;
+  for(j = 0; j < num_leds[i]; j++){
+    leds[i][j] = CRGB::LimeGreen;
+    FastLED.show();
+  }
+  i = 0;
+  for(int j = num_leds[i] - 1; j>= 0; j--){
+    while(i <= 1){
+      leds[i][j] = CRGB::LimeGreen;
+      FastLED.show();
+      i++;
+    }
+    i = 0;
+  }
+  // spine lights up 
+  for(i = 3; i < 10; i++){
+    for(j = num_leds[i] - 1; j >= 0; j--){
+      leds[i][j] = CRGB::LimeGreen;
+      FastLED.show();
+    }
+  }
 }
 
 // light up left to right, by bone
