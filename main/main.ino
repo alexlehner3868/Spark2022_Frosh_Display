@@ -55,6 +55,8 @@ int num_leds[14];
 /**********START OF GLOBAL VARIABLES******************/
 uint8_t hue = 0; // starting hue
 long randNum;
+uint32_t colour[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::SkyBlue, CRGB::MediumPurple};
+uint32_t rainbowColour;
 /**********END OF GLOBAL VARIABLES******************/
 
 
@@ -87,9 +89,10 @@ void colorRainbowChange(){
 // need to fix/change completely
 void brightnessChange(){
   // set color
-    for(int i = 0; i < 14; i++){
+  rainbowColour = colour[random(6)];
+  for(int i = 0; i < 14; i++){
     for(int j = 0; j < num_leds[i]; j++){
-      leds[i][j] = CRGB::LimeGreen;
+      leds[i][j] = rainbowColour;
     }
   }
   FastLED.show();
@@ -117,12 +120,13 @@ void brightnessChange(){
 
 // light up bottom to top, by LEDs
 void lightBottomTop(){
+  rainbowColour = colour[random(6)];
   // legs lights up
   int i = 11;
   int j;
   for(j = num_leds[i] - 1; j >= 0; j--){
     while(i < 14){
-      leds[i][j] = CRGB::LimeGreen; 
+      leds[i][j] = rainbowColour; 
       FastLED.show();
       i++;
     }
@@ -131,13 +135,13 @@ void lightBottomTop(){
   // head lights up
   i = 2;
   for(j = 0; j < num_leds[i]; j++){
-    leds[i][j] = CRGB::LimeGreen;
+    leds[i][j] = rainbowColour;
     FastLED.show();
   }
   i = 0;
   for(int j = num_leds[i] - 1; j>= 0; j--){
     while(i <= 1){
-      leds[i][j] = CRGB::LimeGreen;
+      leds[i][j] = rainbowColour;
       FastLED.show();
       i++;
     }
@@ -146,7 +150,7 @@ void lightBottomTop(){
   // spine lights up 
   for(i = 3; i < 10; i++){
     for(j = num_leds[i] - 1; j >= 0; j--){
-      leds[i][j] = CRGB::LimeGreen;
+      leds[i][j] = rainbowColour;
       FastLED.show();
     }
   }
@@ -154,9 +158,10 @@ void lightBottomTop(){
 
 // light up left to right, by bone
 void lightLeftRightBone() {
+  rainbowColour = colour[random(6)];
   for (int k = 0; k < 14; k++){
     for (int i = 0; i < num_leds[k]; i++) {
-      (leds[k])[i] = CRGB::LimeGreen;
+      (leds[k])[i] = rainbowColour;
     }
     delay(250);
     FastLED.show();
@@ -165,9 +170,10 @@ void lightLeftRightBone() {
 
 // light up left to right, by LEDs
 void lightLeftRightLED() {
+  rainbowColour = colour[random(6)];
   for (int k = 0; k < 14; k++){
     for (int i = num_leds[k] - 1; i >= 0; i--) {
-      (leds[k])[i] = CRGB::LimeGreen;
+      (leds[k])[i] = rainbowColour;
       FastLED.show();
     }
   }
@@ -178,7 +184,7 @@ void colourRainbowWave() {
   for (int j = 0; j < 255; j++) {
     for (int k = 0; k < 14; k++){
       for (int i = 0; i < num_leds[k]; i++) {
-        (leds[k])[i] = CHSV(i - (j * 2), SATURATION, BRIGHTNESS); 
+        (leds[k])[i] = CHSV(i - (j * 4), SATURATION, BRIGHTNESS); 
       }
       FastLED.show();
     }
