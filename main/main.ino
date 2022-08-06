@@ -348,8 +348,6 @@ void loop(){
     time_since_last_clap = millis();
     state = random(NUM_ANIMATIONS);
 
-    clap = false;
-
     switch(state){
       case 0:
         colorRainbowChange();  
@@ -378,18 +376,16 @@ void loop(){
       default:
         break;
     };
+    clap = false;
   }
-
-  // DISABLE ALL LIGHTS 
-  // Loop through all sementes
-    //Loop through all LEDS in segments 
-      //Turn off
-  for (int i = 0; i < 14; i++){
-    for (int k = 0; k < num_leds[i]; k++){
-      leds[i][k] = CRGB::Black;
+  // Keep the lights on for 4 seconds before disabling (unless a clap happends first)
+  if(time_since_last_clap - millis() > 4000){
+    for (int i = 0; i < 14; i++){
+      for (int k = 0; k < num_leds[i]; k++){
+        leds[i][k] = CRGB::Black;
+      }
     }
   }
   FastLED.show();
-
 
 }
