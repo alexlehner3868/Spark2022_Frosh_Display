@@ -93,25 +93,21 @@ void lightBottomTop(){
 
 // light up left to right, by bone
 void lightLeftRightBone() {
-  for (int j = 0; j < 255; j++) {
-    for (int k = 0; k < 14; k++){
-      for (int i = 0; i < num_leds[k]; i++) {
-        (leds[k])[i] = CRGB::LimeGreen;
-      }
-      delay(250);
-      FastLED.show();
+  for (int k = 0; k < 14; k++){
+    for (int i = 0; i < num_leds[k]; i++) {
+      (leds[k])[i] = CRGB::LimeGreen;
     }
+    delay(250);
+    FastLED.show();
   }
 }
 
 // light up left to right, by LEDs
 void lightLeftRightLED() {
-  for (int j = 0; j < 255; j++) {
-    for (int k = 0; k < 14; k++){
-      for (int i = num_leds[k] - 1; i >= 0; i--) {
-        (leds[k])[i] = CRGB::LimeGreen;
-        FastLED.show();
-      }
+  for (int k = 0; k < 14; k++){
+    for (int i = num_leds[k] - 1; i >= 0; i--) {
+      (leds[k])[i] = CRGB::LimeGreen;
+      FastLED.show();
     }
   }
 }
