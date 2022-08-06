@@ -343,8 +343,7 @@ void loop(){
     state = random(NUM_ANIMATIONS);
 
     clap = false;
-  }
- 
+
     switch(state){
       case 0:
         colorRainbowChange();  
@@ -368,29 +367,23 @@ void loop(){
         colourRainbowBone();
         break;
       case 7:
-        if (opposite_animation == 1)
-          flicker(CRGB::Black);
-        else
-          flicker(CRGB::White);
-        opposite_animation *= -1;
+        flicker(CRGB::White);
         break;
       default:
         break;
     };
-  
-
-  // Turn off LEDS if its been 10 minutes 
-  if(millis() - time_since_last_clap > 600000){
-    // DISABLE ALL LIGHTS 
-    // Loop through all sementes
-      //Loop through all LEDS in segments 
-        //Turn off
-    for (int i = 0; i < 14; i++){
-      for (int k = 0; k < num_leds[i]; k++){
-        leds[i][k] = CRGB::Black;
-      }
-    }
-    FastLED.show();
   }
+
+  // DISABLE ALL LIGHTS 
+  // Loop through all sementes
+    //Loop through all LEDS in segments 
+      //Turn off
+  for (int i = 0; i < 14; i++){
+    for (int k = 0; k < num_leds[i]; k++){
+      leds[i][k] = CRGB::Black;
+    }
+  }
+  FastLED.show();
+
 
 }
