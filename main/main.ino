@@ -156,6 +156,40 @@ void colourRainbowBone() {
   }
 }
 
+//flickers random leds on/off 
+void flicker(CRGB colour){
+
+  unsigned long start = millis();
+  unsigned long last = millis();
+  int strip = random(14); //pick random strip
+  int position = random(num_leds[strip]);                           
+  leds[strip][position] = colour;
+  
+  while(true){
+
+    //every x millis, flicker another led off/on
+    if (millis() - last > 10){
+      strip = random(14);
+      position = random(num_leds[strip]);  // Pick an LED at random.
+      leds[strip][position] = colour;  
+      last = millis();
+    }
+
+    //after a while, make the entire thing coloured so that animation doesn't take too long
+    if (millis() - start > 2000){
+
+      for (int i = 0; i < 14; i++){
+        for (int k = 0; k < num_leds[i]; k++){
+          leds[i][k] = colour;
+        }
+      }
+      FastLED.show();  
+      break;
+    }
+     FastLED.show();  
+  }
+}
+
 /**********END OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
 
 
@@ -243,7 +277,8 @@ void setup() {
 bool clap = false; // This is the signal frm the other team 
 int state = 0;
 unsigned long time_since_last_clap = 0;
-#define NUM_ANIMATIONS 7 // The number of animations we have programmed   
+int opposite_animation = -1; //-1 = false, 1 = true
+#define NUM_ANIMATIONS 8 // The number of animations we have programmed   
 
 void loop(){
   if(clap){
@@ -274,6 +309,13 @@ void loop(){
         break;
       case 6:
         colourRainbowBone();
+        break;
+      case 7:
+        if (opposite_animation == 1)
+          flicker(CRGB::Black);
+        else
+          flicker(CRGB::White);
+        opposite_animation *= -1;
         break;
       default:
         break;
