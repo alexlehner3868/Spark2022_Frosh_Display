@@ -30,6 +30,10 @@
 
 #define TOTAL_LEDS 137
 
+// sound microphone sensor pins
+#define sensorPin 7
+#define relayPin 8
+
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
 struct CRGB leds2[NUM_LEDS2]; 
