@@ -4,8 +4,6 @@
 
 // CRGB leds[NUM_LEDS];
 
-
-
 // Fixed definitions cannot change on the fly.
 #define LED_DT 22
 #define COLOR_ORDER GRB
@@ -51,6 +49,14 @@ struct CRGB* leds[14];
 
 //array that contains the num of leds for each strip
 int num_leds[14];
+
+// Variables to control state
+bool clap = false; // This is the signal frm the other team 
+int state = 0;
+unsigned long time_since_last_clap = 0;
+int opposite_animation = -1; //-1 = false, 1 = true
+#define NUM_ANIMATIONS 9 // The number of animations we have programmed   
+
 
 /**********START OF GLOBAL VARIABLES******************/
 uint8_t hue = 0; // starting hue
@@ -219,6 +225,24 @@ void colourRainbowBone() {
   }
 }
 
+// Flashes bones on randomly
+void flash_bones(){
+  unsigned long start = millis();
+  while(millis() - start < 5000){
+    random_color = colour[random(6)];
+    int random_bone = random(14);
+    for(int i = 0; i < num_leds[random_bone]; i++){
+      (leds[random_bone])[i] = random_color;
+      FastLED.show();
+    }
+    delay(300);
+    for(int i = 0; i < num_leds[random_bone]; i++){
+      (leds[random_bone])[i] = CRGB::Black;
+    }
+
+  }
+}
+
 //flickers random leds on/off 
 void flicker(CRGB colour){
 
@@ -314,35 +338,6 @@ void setup() {
   //randNum = random(2);
 }
  
-/* void loop() {
-  
-  // 0. colour change 
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CHSV(hue, 255, 255);
-  }
-  EVERY_N_MILLISECONDS(100){
-    hue++;
-  }
-  // 2. Flashing Leds
-  for(int i = 0; i < NUM_LEDS; i++){
-    leds[i] = CRGB::LimeGreen;
-    FastLED.show();
-  }
-  delay(1000);
-  for(int i = 0; i < NUM_LEDS; i++){
-    leds[0] = CRGB::Black;
-    FastLED.show();
-  }
-  
-  FastLED.show();
-}
- */
-bool clap = false; // This is the signal frm the other team 
-int state = 0;
-unsigned long time_since_last_clap = 0;
-int opposite_animation = -1; //-1 = false, 1 = true
-#define NUM_ANIMATIONS 8 // The number of animations we have programmed   
-
 void loop(){
   if(clap){
     time_since_last_clap = millis();
@@ -373,6 +368,8 @@ void loop(){
       case 7:
         flicker(CRGB::White);
         break;
+      case 8:
+        flash_bones();
       default:
         break;
     };
