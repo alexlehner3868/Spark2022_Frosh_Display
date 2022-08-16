@@ -62,12 +62,14 @@ int opposite_animation = -1; //-1 = false, 1 = true
 uint8_t hue = 0; // starting hue
 long randNum;
 uint32_t colour[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::SkyBlue, CRGB::MediumPurple};
+uint8_t chsvColour[] = {1, 39, 60, 120, 197, 291};
 uint32_t rainbowColour;
 /**********END OF GLOBAL VARIABLES******************/
 
 
 /**********START OF ANIMATION FUNCTION PROTOTYPES******************/
 void colorRainbowChange();
+void gradualColorRainbowChange();
 void brightnessChange();
 void lightBottomTop();
 void lightLeftRightBone();
@@ -78,50 +80,54 @@ void colourRainbowBone();
 
 
 /**********START OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
-// change color for all bones and LEDs
+// change color for all bones and LEDs with preselected RGB colors
 void colorRainbowChange(){
-  for (int i = 0; i < 14; i++) {
-    for (int j = 0; j < num_leds[i]; j++){
-      leds[i][j] = CHSV(hue, 255, 255);
-    }
+  for(int k = 0; k < 6; k++){
+    for(int i = 0; i < 14; i++){
+      for(int j = 0; j < num_leds[i]; j++){
+        leds[i][j] = colour[k];
+      }
+    }      
+    FastLED.show();
+    delay(1000);
   }
-  EVERY_N_MILLISECONDS(100){
-    hue++;
-  }
-  FastLED.show();
 }
 
-// dim and light brightness for all bones and LEDs
-// need to fix/change completely
+// change color for all bones and LEDs smoothly
+void gradualColorRainbowChange(){
+  for(hue; hue < 255 ; hue++ ){
+    for(int i = 0; i < 14; i++){
+      for(int j = 0; j < num_leds[i]; j++){
+        leds[i][j] = CHSV(hue, 255, 255);
+      }
+    } 
+    delay(50);
+    FastLED.show();
+  }
+  hue = 0;
+}
+
+// dim for all bones and LEDs
 void brightnessChange(){
-  // set color
-  rainbowColour = colour[random(6)];
+  //set colour
+  rainbowColour = random(chsvColour);
   for(int i = 0; i < 14; i++){
     for(int j = 0; j < num_leds[i]; j++){
-      leds[i][j] = rainbowColour;
+      leds[i][j] = CHSV(rainbowColour, SATURATION, BRIGHTNESS);
     }
   }
   FastLED.show();
-  delay(1000);
-  //  fade all LEDs down by 100 in brightness each time this is called
-  EVERY_N_MILLISECONDS(100){
-    fadeToBlackBy(leds1, NUM_LEDS1, 100);
-    fadeToBlackBy(leds2, NUM_LEDS2, 100);
-    fadeToBlackBy(leds3, NUM_LEDS3, 100);
-    fadeToBlackBy(leds4, NUM_LEDS4, 100);
-    fadeToBlackBy(leds5, NUM_LEDS5, 100);
-    fadeToBlackBy(leds6, NUM_LEDS6, 100);
-    fadeToBlackBy(leds7, NUM_LEDS7, 100);
-    fadeToBlackBy(leds8, NUM_LEDS8, 100);
-    fadeToBlackBy(leds9, NUM_LEDS9, 100);
-    fadeToBlackBy(leds10, NUM_LEDS10, 100);
-    fadeToBlackBy(leds11, NUM_LEDS11, 100);
-    fadeToBlackBy(leds12, NUM_LEDS12, 100);
-    fadeToBlackBy(leds13, NUM_LEDS13, 100);
-    fadeToBlackBy(leds14, NUM_LEDS14, 100);
+  delay(2000); //waits for 2 second
+
+  //starts fade effect by reducing brightness of the pixel
+  for(int k = 255; k >= 0; k--){
+    for(int i = 0; i < 14; i++){
+      for(int j = 0; j < num_leds[i]; j++){
+        leds[i][j] = CHSV(rainbowColour, SATURATION, k);
+      }
+    } FastLED.show();
   }
-  FastLED.show();
-  delay(1000);
+  delay(1000); //waits for a second
 }
 
 // light up bottom to top, by LEDs
@@ -370,6 +376,8 @@ void loop(){
         break;
       case 8:
         flash_bones();
+      case 9:
+        gradualColorRainbowChange();
       default:
         break;
     };
