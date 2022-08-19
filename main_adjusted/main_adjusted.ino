@@ -11,26 +11,21 @@
 #define SATURATION 255
 
 //number of leds in each strip
-#define NUM_LEDS1 5
-#define NUM_LEDS2 5
-#define NUM_LEDS3 7
-#define NUM_LEDS4 5
-#define NUM_LEDS5 8
+#define NUM_LEDS1 12
+#define NUM_LEDS2 18
+#define NUM_LEDS3 22
+#define NUM_LEDS4 21
+#define NUM_LEDS5 9
 #define NUM_LEDS6 9
-#define NUM_LEDS7 12
-#define NUM_LEDS8 10
-#define NUM_LEDS9 10
-#define NUM_LEDS10 12
-#define NUM_LEDS11 12
-#define NUM_LEDS12 14
-#define NUM_LEDS13 14
-#define NUM_LEDS14 14
+#define NUM_LEDS7 9
+#define NUM_LEDS8 20
+#define NUM_LEDS9 20
+#define NUM_LEDS10 20
+#define NUM_LEDS11 20
 
 #define TOTAL_LEDS 137
 
-// sound microphone sensor pins
-#define sensorPin 7
-#define relayPin 8
+#define NUM_SEGMENTS 11
 
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
@@ -44,15 +39,12 @@ struct CRGB leds8[NUM_LEDS8];
 struct CRGB leds9[NUM_LEDS9]; 
 struct CRGB leds10[NUM_LEDS10];
 struct CRGB leds11[NUM_LEDS11]; 
-struct CRGB leds12[NUM_LEDS12]; 
-struct CRGB leds13[NUM_LEDS13]; 
-struct CRGB leds14[NUM_LEDS14]; 
 
 //array that stores all the segments
-struct CRGB* leds[14];
+struct CRGB* leds[NUM_SEGMENTS];
 
 //array that contains the num of leds for each strip
-int num_leds[14];
+int num_leds[NUM_SEGMENTS];
 
 // Variables to control state
 bool clap = false; // This is the signal frm the other team 
@@ -82,12 +74,11 @@ void colourRainbowWave();
 void colourRainbowBone();
 /**********END OF ANIMATION FUNCTION PROTOTYPES******************/
 
-
 /**********START OF ANIMATION FUNCTION IMPLEMENTATIONS******************/
 // change color for all bones and LEDs with preselected RGB colors
 void colorRainbowChange(){
   for(int k = 0; k < 6; k++){
-    for(int i = 0; i < 14; i++){
+    for(int i = 0; i < NUM_SEGMENTS; i++){
       for(int j = 0; j < num_leds[i]; j++){
         leds[i][j] = colour[k];
       }
@@ -100,7 +91,7 @@ void colorRainbowChange(){
 // change color for all bones and LEDs smoothly
 void gradualColorRainbowChange(){
   for(hue; hue < 255 ; hue++ ){
-    for(int i = 0; i < 14; i++){
+    for(int i = 0; i < NUM_SEGMENTS; i++){
       for(int j = 0; j < num_leds[i]; j++){
         leds[i][j] = CHSV(hue, 255, 255);
       }
@@ -115,7 +106,7 @@ void gradualColorRainbowChange(){
 void brightnessChange(){
   //set colour
   rainbowColour = random(chsvColour);
-  for(int i = 0; i < 14; i++){
+  for(int i = 0; i < NUM_SEGMENTS; i++){
     for(int j = 0; j < num_leds[i]; j++){
       leds[i][j] = CHSV(rainbowColour, SATURATION, BRIGHTNESS);
     }
@@ -125,7 +116,7 @@ void brightnessChange(){
 
   //starts fade effect by reducing brightness of the pixel
   for(int k = 255; k >= 0; k--){
-    for(int i = 0; i < 14; i++){
+    for(int i = 0; i < NUM_SEGMENTS; i++){
       for(int j = 0; j < num_leds[i]; j++){
         leds[i][j] = CHSV(rainbowColour, SATURATION, k);
       }
@@ -141,7 +132,7 @@ void lightBottomTop(){
   int i = 11;
   int j;
   for(j = num_leds[i] - 1; j >= 0; j--){
-    while(i < 14){
+    while(i < NUM_SEGMENTS){
       leds[i][j] = rainbowColour; 
       FastLED.show();
       i++;
@@ -175,7 +166,7 @@ void lightBottomTop(){
 // light up left to right, by bone
 void lightLeftRightBone() {
   rainbowColour = colour[random(6)];
-  for (int k = 0; k < 14; k++){
+  for (int k = 0; k < NUM_SEGMENTS; k++){
     for (int i = 0; i < num_leds[k]; i++) {
       (leds[k])[i] = rainbowColour;
     }
@@ -187,7 +178,7 @@ void lightLeftRightBone() {
 // light up left to right, by LEDs
 void lightLeftRightLED() {
   rainbowColour = colour[random(6)];
-  for (int k = 0; k < 14; k++){
+  for (int k = 0; k < NUM_SEGMENTS; k++){
     for (int i = num_leds[k] - 1; i >= 0; i--) {
       (leds[k])[i] = rainbowColour;
       FastLED.show();
@@ -198,7 +189,7 @@ void lightLeftRightLED() {
 // rainbow wave 
 void colourRainbowWave() {
   for (int j = 0; j < 255; j++) {
-    for (int k = 0; k < 14; k++){
+    for (int k = 0; k < NUM_SEGMENTS; k++){
       for (int i = 0; i < num_leds[k]; i++) {
         (leds[k])[i] = CHSV(i - (j * 4), SATURATION, BRIGHTNESS); 
       }
@@ -210,7 +201,7 @@ void colourRainbowWave() {
 // each bone different rainbow colour left to right
 void colourRainbowBone() {
   for (int j = 0; j < 255; j++) {
-    for (int k = 0; k < 14; k++){
+    for (int k = 0; k < NUM_SEGMENTS; k++){
       for (int i = 0; i < num_leds[k]; i++) {
         if (k == 0 || k == 2) {
           (leds[k])[i] = CRGB::MediumPurple;
@@ -258,7 +249,7 @@ void flicker(CRGB colour){
 
   unsigned long start = millis();
   unsigned long last = millis();
-  int strip = random(14); //pick random strip
+  int strip = random(NUM_SEGMENTS); //pick random strip
   int position = random(num_leds[strip]);                           
   leds[strip][position] = colour;
   
@@ -266,7 +257,7 @@ void flicker(CRGB colour){
 
     //every x millis, flicker another led off/on
     if (millis() - last > 10){
-      strip = random(14);
+      strip = random(NUM_SEGMENTS);
       position = random(num_leds[strip]);  // Pick an LED at random.
       leds[strip][position] = colour;  
       last = millis();
@@ -275,7 +266,7 @@ void flicker(CRGB colour){
     //after a while, make the entire thing coloured so that animation doesn't take too long
     if (millis() - start > 2000){
 
-      for (int i = 0; i < 14; i++){
+      for (int i = 0; i < NUM_SEGMENTS; i++){
         for (int k = 0; k < num_leds[i]; k++){
           leds[i][k] = colour;
         }
@@ -294,6 +285,8 @@ void setup() {
   // put your setup code here, to run once:
 
   //connecting the led arrays to the strips + their digital pin
+
+  
   LEDS.addLeds<WS2812B, 10, COLOR_ORDER>(leds1, NUM_LEDS1);  // Use this for WS2801 or APA102
   LEDS.addLeds<WS2812B, 11, COLOR_ORDER>(leds2, NUM_LEDS2);
   LEDS.addLeds<WS2812B, 12, COLOR_ORDER>(leds3, NUM_LEDS3);
@@ -305,9 +298,6 @@ void setup() {
   LEDS.addLeds<WS2812B, 18, COLOR_ORDER>(leds9, NUM_LEDS9);
   LEDS.addLeds<WS2812B, 19, COLOR_ORDER>(leds10, NUM_LEDS10);
   LEDS.addLeds<WS2812B, 20, COLOR_ORDER>(leds11, NUM_LEDS11);
-  LEDS.addLeds<WS2812B, 21, COLOR_ORDER>(leds12, NUM_LEDS12);
-  LEDS.addLeds<WS2812B, 22, COLOR_ORDER>(leds13, NUM_LEDS13);
-  LEDS.addLeds<WS2812B, 23, COLOR_ORDER>(leds14, NUM_LEDS14);  
 
   //setting up segment array
   leds[0] = leds1;
@@ -321,9 +311,6 @@ void setup() {
   leds[8] = leds9;
   leds[9] = leds10;
   leds[10] =leds11;
-  leds[11] = leds12;
-  leds[12] = leds13;
-  leds[13] = leds14;
 
   //setting up num of leds per strip array
   num_leds[0] = NUM_LEDS1;
@@ -337,9 +324,6 @@ void setup() {
   num_leds[8] = NUM_LEDS9;
   num_leds[9] = NUM_LEDS10;
   num_leds[10] = NUM_LEDS11;
-  num_leds[11] = NUM_LEDS12;
-  num_leds[12] = NUM_LEDS13;
-  num_leds[13] = NUM_LEDS14;
 
   
   // generate a random number
@@ -389,7 +373,7 @@ void loop(){
   }
   // Keep the lights on for 4 seconds before disabling (unless a clap happends first)
   if(time_since_last_clap - millis() > 4000){
-    for (int i = 0; i < 14; i++){
+    for (int i = 0; i < NUM_SEGMENTS; i++){
       for (int k = 0; k < num_leds[i]; k++){
         leds[i][k] = CRGB::Black;
       }
