@@ -7,7 +7,7 @@
 // Fixed definitions cannot change on the fly.
 #define LED_DT 22
 #define COLOR_ORDER GRB
-#define BRIGHTNESS 255  
+#define BRIGHTNESS 35  
 #define SATURATION 255
 
 //number of leds in each strip
@@ -18,14 +18,11 @@
 #define NUM_LEDS5 9
 #define NUM_LEDS6 9
 #define NUM_LEDS7 9
-#define NUM_LEDS8 20
-#define NUM_LEDS9 20
-#define NUM_LEDS10 20
-#define NUM_LEDS11 20
 
-#define TOTAL_LEDS 137
 
-#define NUM_SEGMENTS 11
+#define TOTAL_LEDS 100
+
+#define NUM_SEGMENTS 7
 
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
@@ -35,10 +32,7 @@ struct CRGB leds4[NUM_LEDS4];
 struct CRGB leds5[NUM_LEDS5]; 
 struct CRGB leds6[NUM_LEDS6]; 
 struct CRGB leds7[NUM_LEDS7];
-struct CRGB leds8[NUM_LEDS8];
-struct CRGB leds9[NUM_LEDS9]; 
-struct CRGB leds10[NUM_LEDS10];
-struct CRGB leds11[NUM_LEDS11]; 
+
 
 //array that stores all the segments
 struct CRGB* leds[NUM_SEGMENTS];
@@ -125,37 +119,29 @@ void brightnessChange(){
   delay(1000); //waits for a second
 }
 
+//TODO FIX THIS
 // light up bottom to top, by LEDs
 void lightBottomTop(){
   rainbowColour = colour[random(6)];
   // legs lights up
-  int i = 11;
+  int i = 4;
   int j;
-  for(j = num_leds[i] - 1; j >= 0; j--){
+  for(j = num_leds[i]; j >= 0; j--){
     while(i < NUM_SEGMENTS){
       leds[i][j] = rainbowColour; 
       FastLED.show();
       i++;
     }
-    i = 10;
   }
   // head lights up
-  i = 2;
-  for(j = 0; j < num_leds[i]; j++){
-    leds[i][j] = rainbowColour;
-    FastLED.show();
-  }
   i = 0;
-  for(int j = num_leds[i] - 1; j>= 0; j--){
-    while(i <= 1){
+  for(j = num_leds[i] - 1; j>= 0; j--){
       leds[i][j] = rainbowColour;
       FastLED.show();
-      i++;
     }
-    i = 0;
   }
   // spine lights up 
-  for(i = 3; i < 10; i++){
+  for(i = 2; i < 5; i++){
     for(j = num_leds[i] - 1; j >= 0; j--){
       leds[i][j] = rainbowColour;
       FastLED.show();
@@ -206,19 +192,13 @@ void colourRainbowBone() {
         if (k == 0 || k == 2) {
           (leds[k])[i] = CRGB::MediumPurple;
         } else if (k == 1 || k == 3) {
-          (leds[k])[i] = CRGB::Purple;
-        } else if (k == 4) {
-          (leds[k])[i] = CRGB::Red;
-        } else if (k == 5 || k == 10 || k == 11) {
-          (leds[k])[i] = CRGB::Orange;
-        } else if (k == 6 || k == 12) {
-          (leds[k])[i] = CRGB::Yellow;
-        } else if (k == 7 || k == 13) {
-          (leds[k])[i] = CRGB::GreenYellow;
-        } else if (k == 8) {
-          (leds[k])[i] = CRGB::CadetBlue;
-        } else if (k == 9) {
           (leds[k])[i] = CRGB::SkyBlue;
+        } else if (k == 4 || k == 6) {
+          (leds[k])[i] = CRGB::Red;
+        } else if (k == 5) {
+          (leds[k])[i] = CRGB::Orange;
+        } else if (k == 6) {
+          (leds[k])[i] = CRGB::Yellow;
         }
       }
       FastLED.show();
@@ -231,7 +211,7 @@ void flash_bones(){
   unsigned long start = millis();
   while(millis() - start < 5000){
     random_color = colour[random(6)];
-    int random_bone = random(14);
+    int random_bone = random(NUM_SEGMENTS);
     for(int i = 0; i < num_leds[random_bone]; i++){
       (leds[random_bone])[i] = random_color;
       FastLED.show();
@@ -294,10 +274,6 @@ void setup() {
   LEDS.addLeds<WS2812B, 14, COLOR_ORDER>(leds5, NUM_LEDS5);
   LEDS.addLeds<WS2812B, 15, COLOR_ORDER>(leds6, NUM_LEDS6);
   LEDS.addLeds<WS2812B, 16, COLOR_ORDER>(leds7, NUM_LEDS7);
-  LEDS.addLeds<WS2812B, 17, COLOR_ORDER>(leds8, NUM_LEDS8);  // Use this for WS2801 or APA102
-  LEDS.addLeds<WS2812B, 18, COLOR_ORDER>(leds9, NUM_LEDS9);
-  LEDS.addLeds<WS2812B, 19, COLOR_ORDER>(leds10, NUM_LEDS10);
-  LEDS.addLeds<WS2812B, 20, COLOR_ORDER>(leds11, NUM_LEDS11);
 
   //setting up segment array
   leds[0] = leds1;
@@ -307,10 +283,6 @@ void setup() {
   leds[4] = leds5;
   leds[5] = leds6;
   leds[6] = leds7;  
-  leds[7] = leds8;
-  leds[8] = leds9;
-  leds[9] = leds10;
-  leds[10] =leds11;
 
   //setting up num of leds per strip array
   num_leds[0] = NUM_LEDS1;
@@ -320,16 +292,15 @@ void setup() {
   num_leds[4] = NUM_LEDS5;
   num_leds[5] = NUM_LEDS6;
   num_leds[6] = NUM_LEDS7;  
-  num_leds[7] = NUM_LEDS8;
-  num_leds[8] = NUM_LEDS9;
-  num_leds[9] = NUM_LEDS10;
-  num_leds[10] = NUM_LEDS11;
-
   
   // generate a random number
   Serial.begin(9600);
   randomSeed(analogRead(0));
   //randNum = random(2);
+
+  //set up brightness
+  FastLED.setBrightness(BRIGHTNESS);
+
 }
  
 void loop(){
