@@ -11,18 +11,22 @@
 #define SATURATION 255
 
 // number of leds in each strip
-#define NUM_LEDS1 12
-#define NUM_LEDS2 18
-#define NUM_LEDS3 22
-#define NUM_LEDS4 21
+#define NUM_LEDS1 10
+#define NUM_LEDS2 17
+#define NUM_LEDS3 21
+#define NUM_LEDS4 19
 #define NUM_LEDS5 9
 #define NUM_LEDS6 9
 #define NUM_LEDS7 9
+//TODO: this is legs 
+#define NUM_LEDS8 20
+#define NUM_LEDS9 20
+#define NUM_LEDS10 20
+#define NUM_LEDS11 20
 
+#define TOTAL_LEDS 174
 
-#define TOTAL_LEDS 100
-
-#define NUM_SEGMENTS 7
+#define NUM_SEGMENTS 11
 
 // sound microphone sensor pins
 #define sensorPin 7
@@ -39,6 +43,10 @@ struct CRGB leds4[NUM_LEDS4];
 struct CRGB leds5[NUM_LEDS5]; 
 struct CRGB leds6[NUM_LEDS6]; 
 struct CRGB leds7[NUM_LEDS7];
+struct CRGB leds8[NUM_LEDS8];
+struct CRGB leds9[NUM_LEDS9]; 
+struct CRGB leds10[NUM_LEDS10];
+struct CRGB leds11[NUM_LEDS11]; 
 
 
 //array that stores all the segments
@@ -91,10 +99,10 @@ void colorRainbowChange(){
 
 // change color for all bones and LEDs smoothly
 void gradualColorRainbowChange(){
-  for(hue; hue < 255 ; hue++ ){
+  for(hue; hue < BRIGHTNESS ; hue++ ){
     for(int i = 0; i < NUM_SEGMENTS; i++){
       for(int j = 0; j < num_leds[i]; j++){
-        leds[i][j] = CHSV(hue, 255, 255);
+        leds[i][j] = CHSV(hue, 255, BRIGHTNESS);
       }
     } 
     delay(50);
@@ -196,17 +204,21 @@ void colourRainbowBone() {
   for (int j = 0; j < 255; j++) {
     for (int k = 0; k < NUM_SEGMENTS; k++){
       for (int i = 0; i < num_leds[k]; i++) {
-        if (k == 0 || k == 2) {
+        if (k == 0 ) {
           (leds[k])[i] = CRGB::MediumPurple;
-        } else if (k == 1 || k == 3) {
-          (leds[k])[i] = CRGB::SkyBlue;
-        } else if (k == 4 || k == 6) {
+        } else if (k == 1) {
           (leds[k])[i] = CRGB::Red;
-        } else if (k == 5) {
+        } else if (k == 2) {
           (leds[k])[i] = CRGB::Orange;
-        } else if (k == 6) {
+        } else if (k == 3) {
           (leds[k])[i] = CRGB::Yellow;
-        }
+        } else if (k == 4 || k = 7 || k = 8) {
+          (leds[k])[i] = CRGB::Green;
+        } else if (k == 5) {
+          (leds[k])[i] = CRGB::SkyBlue;
+        } else if (k == 6 || k = 9 || k = 10) {
+          (leds[k])[i] = CRGB::CadetBlue;
+        } 
       }
       FastLED.show();
     }
@@ -281,6 +293,10 @@ void setup() {
   LEDS.addLeds<WS2812B, 14, COLOR_ORDER>(leds5, NUM_LEDS5);
   LEDS.addLeds<WS2812B, 15, COLOR_ORDER>(leds6, NUM_LEDS6);
   LEDS.addLeds<WS2812B, 16, COLOR_ORDER>(leds7, NUM_LEDS7);
+  LEDS.addLeds<WS2812B, 17, COLOR_ORDER>(leds8, NUM_LEDS8);  // Use this for WS2801 or APA102
+  LEDS.addLeds<WS2812B, 18, COLOR_ORDER>(leds9, NUM_LEDS9);
+  LEDS.addLeds<WS2812B, 19, COLOR_ORDER>(leds10, NUM_LEDS10);
+  LEDS.addLeds<WS2812B, 20, COLOR_ORDER>(leds11, NUM_LEDS11);
 
   //setting up segment array
   leds[0] = leds1;
@@ -290,6 +306,10 @@ void setup() {
   leds[4] = leds5;
   leds[5] = leds6;
   leds[6] = leds7;  
+  leds[7] = leds8;
+  leds[8] = leds9;
+  leds[9] = leds10;
+  leds[10] =leds11;
 
   //setting up num of leds per strip array
   num_leds[0] = NUM_LEDS1;
@@ -298,7 +318,11 @@ void setup() {
   num_leds[3] = NUM_LEDS4;
   num_leds[4] = NUM_LEDS5;
   num_leds[5] = NUM_LEDS6;
-  num_leds[6] = NUM_LEDS7;  
+  num_leds[6] = NUM_LEDS7;
+  num_leds[7] = NUM_LEDS8;
+  num_leds[8] = NUM_LEDS9;
+  num_leds[9] = NUM_LEDS10;
+  num_leds[10] = NUM_LEDS11;
   
   // generate a random number
   Serial.begin(9600);
@@ -331,8 +355,7 @@ void loop(){
     if (relayState){
       time_since_last_clap = millis();
       state = random(NUM_ANIMATIONS);
-
-      switch(state){
+    switch(state){
         case 0:
           colorRainbowChange();  
           break;
@@ -340,26 +363,23 @@ void loop(){
           brightnessChange();
           break;
         case 2:
-          lightBottomTop();
-          break;
-        case 3:
           lightLeftRightBone();
           break;
-        case 4:
+        case 3:
           lightLeftRightLED();
           break;
-        case 5:
+        case 4:
           colourRainbowWave();
           break;
-        case 6:
+        case 5:
           colourRainbowBone();
           break;
-        case 7:
+        case 6:
           flicker(CRGB::White);
           break;
-        case 8:
+        case 7:
           flash_bones();
-        case 9:
+        case 8:
           gradualColorRainbowChange();
         default:
           break;
