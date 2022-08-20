@@ -30,7 +30,11 @@
 
 // sound microphone sensor pins
 #define sensorPin 7
-#define relayPin 8
+// #define relayPin 8
+
+// Variable to store the time when last event happened
+unsigned long lastEvent = 0;
+boolean relayState = false;    // Variable to store the state of relay
 
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
@@ -346,49 +350,98 @@ void setup() {
   Serial.begin(9600);
   randomSeed(analogRead(0));
   //randNum = random(2);
+
+  // pinMode(relayPin, OUTPUT);  // Set relay pin as an OUTPUT pin
+	pinMode(sensorPin, INPUT);  // Set sensor pin as an INPUT
 }
  
-void loop(){
-  if(clap){
-    time_since_last_clap = millis();
-    state = random(NUM_ANIMATIONS);
 
-    switch(state){
-      case 0:
-        colorRainbowChange();  
-        break;
-      case 1:
-        brightnessChange();
-        break;
-      case 2:
-        lightBottomTop();
-        break;
-      case 3:
-        lightLeftRightBone();
-        break;
-      case 4:
-        lightLeftRightLED();
-        break;
-      case 5:
-        colourRainbowWave();
-        break;
-      case 6:
-        colourRainbowBone();
-        break;
-      case 7:
-        flicker(CRGB::White);
-        break;
-      case 8:
-        flash_bones();
-      case 9:
-        gradualColorRainbowChange();
-      default:
-        break;
-    };
-    clap = false;
+/* void loop() {
+  
+  // 0. colour change 
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CHSV(hue, 255, 255);
   }
-  // Keep the lights on for 4 seconds before disabling (unless a clap happends first)
-  if(time_since_last_clap - millis() > 4000){
+  EVERY_N_MILLISECONDS(100){
+    hue++;
+  }
+  // 2. Flashing Leds
+  for(int i = 0; i < NUM_LEDS; i++){
+    leds[i] = CRGB::LimeGreen;
+    FastLED.show();
+  }
+  delay(1000);
+  for(int i = 0; i < NUM_LEDS; i++){
+    leds[0] = CRGB::Black;
+    FastLED.show();
+  }
+  
+  FastLED.show();
+}
+ */
+bool clap = false; // This is the signal frm the other team
+int state = 0;
+unsigned long time_since_last_clap = 0;
+int opposite_animation = -1; //-1 = false, 1 = true
+#define NUM_ANIMATIONS 8 // The number of animations we have programmed   
+
+
+void loop(){
+  // Read Sound sensor
+	int sensorData = digitalRead(sensorPin);
+
+  	// If pin goes LOW, sound is detected
+	if (sensorData == LOW) {
+
+	// If 25ms have passed since last LOW state, it means that
+	// the clap is detected and not due to any spurious sounds
+    if (millis() - lastEvent > 25) {
+      //toggle relay and set the output
+      relayState = !relayState;
+      // digitalWrite(relayPin, relayState ? HIGH : LOW);
+    }
+
+    if (relayState){
+      time_since_last_clap = millis();
+      state = random(NUM_ANIMATIONS);
+
+      switch(state){
+        case 0:
+          colorRainbowChange();  
+          break;
+        case 1:
+          brightnessChange();
+          break;
+        case 2:
+          lightBottomTop();
+          break;
+        case 3:
+          lightLeftRightBone();
+          break;
+        case 4:
+          lightLeftRightLED();
+          break;
+        case 5:
+          colourRainbowWave();
+          break;
+        case 6:
+          colourRainbowBone();
+          break;
+        case 7:
+          flicker(CRGB::White);
+          break;
+        case 8:
+          flash_bones();
+        case 9:
+          gradualColorRainbowChange();
+        default:
+          break;
+      }
+    
+    }
+  
+  // Keep the lights on for 4 seconds before disabling (unless a clap happens first)
+  if (time_since_last_clap - millis() > 4000){
     for (int i = 0; i < 14; i++){
       for (int k = 0; k < num_leds[i]; k++){
         leds[i][k] = CRGB::Black;
@@ -397,4 +450,7 @@ void loop(){
   }
   FastLED.show();
 
+	// Remember when last event happened
+	lastEvent = millis();
+	}
 }
