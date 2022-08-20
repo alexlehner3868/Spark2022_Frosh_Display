@@ -19,12 +19,12 @@
 #define NUM_LEDS6 9
 #define NUM_LEDS7 9
 //TODO: this is legs 
-#define NUM_LEDS8 20
-#define NUM_LEDS9 20
-#define NUM_LEDS10 20
-#define NUM_LEDS11 20
+#define NUM_LEDS8 7
+#define NUM_LEDS9 7
+#define NUM_LEDS10 7
+#define NUM_LEDS11 7
 
-#define TOTAL_LEDS 174
+#define TOTAL_LEDS 122
 
 #define NUM_SEGMENTS 11
 
