@@ -29,11 +29,11 @@
 #define NUM_SEGMENTS 11
 
 // sound microphone sensor pins
-#define sensorPin 7
+//#define sensorPin 7
+const int microphonePin = A0;
 
-// Variable to store the time when last event happened
-unsigned long lastEvent = 0;
-boolean relayState = false;    // Variable to store the state of relay
+// Variable to store threshold clap input 
+const int threshold = 20;  // subject to change :))))
 
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
@@ -61,6 +61,8 @@ int state = 0;
 unsigned long time_since_last_clap = 0;
 int opposite_animation = -1; //-1 = false, 1 = true
 #define NUM_ANIMATIONS 9 // The number of animations we have programmed   
+
+
 
 
 /**********START OF GLOBAL VARIABLES******************/
@@ -330,7 +332,8 @@ void setup() {
   //randNum = random(2);
 
 
-  pinMode(sensorPin, INPUT);  // Set sensor pin as an INPUT
+//  pinMode(sensorPin, INPUT);  // Set sensor pin as an INPUT
+  
 
   //set up brightness
   FastLED.setBrightness(BRIGHTNESS);
@@ -338,23 +341,20 @@ void setup() {
 }
  
 void loop(){
-  // Read Sound sensor
-	int sensorData = digitalRead(sensorPin);
+  int mn = 1024;
+  int mx = 0;
 
-  	// If pin goes LOW, sound is detected
-	if (sensorData == LOW) {
+  for (int i = 0; i < 10000; ++i) {
+    int val = analogRead(microphonePin);
 
-	// If 25ms have passed since last LOW state, it means that
-	// the clap is detected and not due to any spurious sounds
-    if (millis() - lastEvent > 25) {
-      //toggle relay and set the output
-      relayState = !relayState;
-      // digitalWrite(relayPin, relayState ? HIGH : LOW);
-    }
+    mn = min(mn, val);
+    mx = max(mx, val);
+  }
 
-    if (relayState){
-      time_since_last_clap = millis();
-      state = random(NUM_ANIMATIONS);
+  int delta = mx - mn;
+    
+  if (delta > threshold){
+    state = random(NUM_ANIMATIONS);
     switch(state){
         case 0:
           colorRainbowChange();  
@@ -384,20 +384,16 @@ void loop(){
         default:
           break;
       }
-    
-    }
+  }
   
-  // Keep the lights on for 4 seconds before disabling (unless a clap happens first)
-  if (time_since_last_clap - millis() > 4000){
+  // Keep the lights on for 10 seconds before disabling (unless a clap happens first)
+  if (time_since_last_clap - millis() > 10000){
     for (int i = 0; i < 14; i++){
-      for (int k = 0; k < num_leds[i]; k++){
+      for (int k = 0; k < NUM_SEGMENTS[i]; k++){
         leds[i][k] = CRGB::Black;
       }
     }
   }
   FastLED.show();
 
-	// Remember when last event happened
-	lastEvent = millis();
-	}
 }
