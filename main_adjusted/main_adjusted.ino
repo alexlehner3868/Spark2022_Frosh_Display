@@ -19,13 +19,14 @@
 #define NUM_LEDS6 9
 #define NUM_LEDS7 9
 //TODO: this is legs 
-#define NUM_LEDS8 14
-#define NUM_LEDS9 14
-
+#define NUM_LEDS8 7
+#define NUM_LEDS9 7
+#define NUM_LEDS10 7
+#define NUM_LEDS11 7
 
 #define TOTAL_LEDS 122
 
-#define NUM_SEGMENTS 9
+#define NUM_SEGMENTS 11
 
 // sound microphone sensor pins
 //#define sensorPin 7
@@ -44,6 +45,9 @@ struct CRGB leds6[NUM_LEDS6];
 struct CRGB leds7[NUM_LEDS7];
 struct CRGB leds8[NUM_LEDS8];
 struct CRGB leds9[NUM_LEDS9]; 
+struct CRGB leds10[NUM_LEDS10];
+struct CRGB leds11[NUM_LEDS11]; 
+
 
 //array that stores all the segments
 struct CRGB* leds[NUM_SEGMENTS];
@@ -210,11 +214,11 @@ void colourRainbowBone() {
           (leds[k])[i] = CRGB::Orange;
         } else if (k == 3) {
           (leds[k])[i] = CRGB::Yellow;
-        } else if (k == 4 || k = 7) {
+        } else if (k == 4 || k = 7 || k = 8) {
           (leds[k])[i] = CRGB::Green;
         } else if (k == 5) {
           (leds[k])[i] = CRGB::SkyBlue;
-        } else if (k == 6 || k = 8) {
+        } else if (k == 6 || k = 9 || k = 10) {
           (leds[k])[i] = CRGB::CadetBlue;
         } 
       }
@@ -293,6 +297,8 @@ void setup() {
   LEDS.addLeds<WS2812B, 16, COLOR_ORDER>(leds7, NUM_LEDS7);
   LEDS.addLeds<WS2812B, 17, COLOR_ORDER>(leds8, NUM_LEDS8);  // Use this for WS2801 or APA102
   LEDS.addLeds<WS2812B, 18, COLOR_ORDER>(leds9, NUM_LEDS9);
+  LEDS.addLeds<WS2812B, 19, COLOR_ORDER>(leds10, NUM_LEDS10);
+  LEDS.addLeds<WS2812B, 20, COLOR_ORDER>(leds11, NUM_LEDS11);
 
   //setting up segment array
   leds[0] = leds1;
@@ -304,7 +310,8 @@ void setup() {
   leds[6] = leds7;  
   leds[7] = leds8;
   leds[8] = leds9;
-
+  leds[9] = leds10;
+  leds[10] =leds11;
 
   //setting up num of leds per strip array
   num_leds[0] = NUM_LEDS1;
@@ -316,7 +323,8 @@ void setup() {
   num_leds[6] = NUM_LEDS7;
   num_leds[7] = NUM_LEDS8;
   num_leds[8] = NUM_LEDS9;
-
+  num_leds[9] = NUM_LEDS10;
+  num_leds[10] = NUM_LEDS11;
   
   // generate a random number
   Serial.begin(9600);
