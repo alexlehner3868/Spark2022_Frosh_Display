@@ -26,7 +26,7 @@
 
 #define TOTAL_LEDS 122
 
-#define NUM_SEGMENTS 11
+#define NUM_SEGMENTS 11 
 
 // sound microphone sensor pins
 //#define sensorPin 7
@@ -155,7 +155,6 @@ void lightBottomTop(){
   for(j = num_leds[i] - 1; j>= 0; j--){
       leds[i][j] = rainbowColour;
       FastLED.show();
-    }
   }
   // spine lights up 
   for(i = 2; i < 5; i++){
@@ -214,11 +213,11 @@ void colourRainbowBone() {
           (leds[k])[i] = CRGB::Orange;
         } else if (k == 3) {
           (leds[k])[i] = CRGB::Yellow;
-        } else if (k == 4 || k = 7 || k = 8) {
+        } else if (k == 4 || k == 7 || k == 8) {
           (leds[k])[i] = CRGB::Green;
         } else if (k == 5) {
           (leds[k])[i] = CRGB::SkyBlue;
-        } else if (k == 6 || k = 9 || k = 10) {
+        } else if (k == 6 || k == 9 || k == 10) {
           (leds[k])[i] = CRGB::CadetBlue;
         } 
       }
@@ -231,7 +230,7 @@ void colourRainbowBone() {
 void flash_bones(){
   unsigned long start = millis();
   while(millis() - start < 5000){
-    random_color = colour[random(6)];
+    CRGB random_color = colour[random(6)];
     int random_bone = random(NUM_SEGMENTS);
     for(int i = 0; i < num_leds[random_bone]; i++){
       (leds[random_bone])[i] = random_color;
@@ -388,8 +387,8 @@ void loop(){
   
   // Keep the lights on for 10 seconds before disabling (unless a clap happens first)
   if (time_since_last_clap - millis() > 10000){
-    for (int i = 0; i < 14; i++){
-      for (int k = 0; k < NUM_SEGMENTS[i]; k++){
+    for (int i = 0; i < NUM_SEGMENTS; i++){
+      for (int k = 0; k < num_leds[i]; k++){
         leds[i][k] = CRGB::Black;
       }
     }
