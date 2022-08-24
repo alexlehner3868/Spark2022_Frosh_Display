@@ -7,8 +7,6 @@
 // Fixed definitions cannot change on the fly.
 #define LED_DT 22
 #define COLOR_ORDER GRB
-#define BRIGHTNESS 35  
-#define SATURATION 255
 
 // number of leds in each strip
 #define NUM_LEDS1 10
@@ -33,7 +31,7 @@
 const int microphonePin = A0;
 
 // Variable to store threshold clap input 
-const int threshold = 20;  // subject to change :))))
+const int threshold = 20;  // subject to change
 
 //creating CRGB led arrays
 struct CRGB leds1[NUM_LEDS1];
@@ -66,10 +64,12 @@ int opposite_animation = -1; //-1 = false, 1 = true
 
 
 /**********START OF GLOBAL VARIABLES******************/
+int BRIGHTNESS = 35 ; 
+int SATURATION = 255;
 uint8_t hue = 0; // starting hue
 long randNum;
 uint32_t colour[] = {CRGB::Red, CRGB::Orange, CRGB::Yellow, CRGB::Green, CRGB::SkyBlue, CRGB::MediumPurple};
-uint8_t chsvColour[] = {1, 39, 60, 120, 197, 291};
+uint8_t chsvColour[] = {1, 39, 60, 120, 197, 255};
 uint32_t rainbowColour;
 /**********END OF GLOBAL VARIABLES******************/
 
@@ -116,7 +116,7 @@ void gradualColorRainbowChange(){
 // dim for all bones and LEDs
 void brightnessChange(){
   //set colour
-  rainbowColour = random(chsvColour);
+  rainbowColour = chsvColour[random(6)];
   for(int i = 0; i < NUM_SEGMENTS; i++){
     for(int j = 0; j < num_leds[i]; j++){
       leds[i][j] = CHSV(rainbowColour, SATURATION, BRIGHTNESS);
